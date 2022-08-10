@@ -1,0 +1,54 @@
+
+.navigation {
+  margin: 1.5%;
+}
+
+.summarizer {
+  max-width: 80%;
+  text-align: center;
+  margin: auto;
+}
+
+.expander {
+  max-width: 80%;
+  text-align: center;
+  margin: auto;
+}
+
+/* Text Boxes */
+
+.text-box {
+  resize: none;
+
+}
+/* Buttons */
+
+.submit-col {
+  width: 90%;
+  padding: 1%;
+  text-align: right;
+}
+
+.tool-button {
+  width: 120px;
+  margin: .5%;
+  text-align: center;
+}
+
+.submit-button {
+  width: 150px;
+  text-align: center;
+  margin-right: 1.5%;
+}
+
+
+
+.buttonrow {
+  text-align: left;
+  margin: 1%;
+  border-radius: 25px;
+}
+
+.buttoncol {
+  margin-left: 10%;
+}
