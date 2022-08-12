@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import Container from "react-bootstrap/Container"
 import Form from "react-bootstrap/Form"
 import Row from 'react-bootstrap/Row';
@@ -6,12 +6,42 @@ import Col from 'react-bootstrap/Col';
 
 function Summarizer(props) {
     
-    // const [textInput, setTextInput] = useState("")
+    let outputText = props.outputText
+    let inputText = props.inputText
+    let tempInput = props.tempInput
+    let submissionCount = props.submissionCount
+    let setOutputText = props.setOutputText
+    const isMounted = useRef(false);
 
     function handleTextChange(e) {
-        e.preventDefault()
-        props.setInputText(e.target.value)
+        props.setTempInput(e.target.value)
+        if (e.target.value.length === 0)
+            props.setOutputText("")
     }
+
+    useEffect(() => {
+        if (isMounted.current) {
+            async function fetchData() {
+                const requestOptions = {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({"text": inputText})
+                }
+        
+                fetch('http://localhost:5000/summarize', requestOptions)
+                    .then(response => response.json())
+                    .then((data) => {
+                        console.log(data.text)
+                        setOutputText(data.text)
+                    })
+            }
+            fetchData()
+        } else {
+            isMounted.current = true
+        }
+
+
+    }, [inputText])
 
     return (
         <Container>
@@ -28,11 +58,13 @@ function Summarizer(props) {
                         </Col>
                         <Col>
                             <Form.Control 
+                            readOnly={true}
                             size="lg"
                             placeholder="This is where the summary ends up!" 
                             as="textarea" rows={10}
-                            className="text-box">
-
+                            className="text-box"
+                            value={props.outputText}>
+                                
                             </Form.Control>
                         </Col>
                     </Row>

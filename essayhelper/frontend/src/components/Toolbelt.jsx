@@ -7,6 +7,7 @@ import Expander from "./Tools/Expander"
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Paraphraser from "./Tools/Paraphraser.jsx";
 
 
 function Toolbelt (props) {
@@ -14,28 +15,45 @@ function Toolbelt (props) {
 
 
     const [inputText, setInputText] = useState("")
+    const [tempInput, setTempInput] = useState("")
     const [isSubmitted, setIsSubmitted] = useState(false)
-    const [tool, setTool] = useState("summarizer")
+    const [tool, setTool] = useState("summarize")
 
-    // const [summarizedText, setSummarizedText] = useState("")
+    const [textIsLoading, setTextIsLoading] = useState(false)
+    const [textIsLoaded, setTextIsLoaded] = useState(false)
+    const [outputText, setOutputText] = useState("")
+    const [submissionCount, setSubmissionCount] = useState(0)
 
-    // "Submit" the text...
-    // Each component tool does the actual handling of the
-    // text to the backend. At this parent level it just 
-    // requests that the text be processed by the child
+    let tool_dict = {
+        "summarize": <Summarizer 
+                        setInputText={setInputText}
+                        setOutputText={setOutputText}
+                        tempInput={tempInput}
+                        setTempInput={setTempInput}
+                        outputText={outputText}
+                        inputText={inputText}
+                        isSubmitted={isSubmitted}
+                        submissionCount={submissionCount}></Summarizer>,
+        "paraphrase": <Paraphraser
+                            setInputText={setInputText}
+                            setOutputText={setOutputText}
+                            outputText={outputText}
+                            inputText={inputText}
+                            isSubmitted={isSubmitted}></Paraphraser> ,
+        "expand": <Expander
+                        setInputText={setInputText}
+                        setOutputText={setOutputText}
+                        outputText={outputText}
+                        inputText={inputText}
+                        isSubmitted={isSubmitted}></Expander>,      
+
+    }
+
+
     function handleSubmit(e) {
-        console.log(inputText)
-        let requestOptions = {
-            mode: "no-cors", 
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: {"textToSummarize": inputText}
-        }
-        console.log(requestOptions)
-        fetch('http://localhost:5000/summarize', requestOptions) 
-            .then(response => console.log(response.json()))
-           
-        setIsSubmitted(true)
+        e.preventDefault()
+        setInputText(tempInput)
+        setSubmissionCount(prev => prev + 1)
     }
 
     return (
@@ -44,30 +62,25 @@ function Toolbelt (props) {
                 <Col className="buttoncol">
                     <Button variant="outline-secondary" 
                             className="tool-button"
-                            onClick={(e) => setTool("summarizer")}>
+                            onClick={(e) => setTool("summarize")}>
                             Summarize
                     </Button>
 
                     <Button variant="outline-secondary"
                             className="tool-button" 
-                            onClick={(e) => setTool("expander")}>
+                            onClick={(e) => setTool("paraphrase")}>
+                            Paraphrase
+                    </Button>
+                    <Button variant="outline-secondary"
+                            className="tool-button" 
+                            onClick={(e) => setTool("expand")}>
                             Expand
                     </Button>
                 </Col>
             </Row>
             <Row>
-            
                 {   
-                    // I'm really gonna have to find
-                    // a better solution to this. Lol.
-                    tool === "summarizer" ? <Summarizer 
-                                                setInputText={setInputText}
-                                                inputText={inputText}
-                                                isSubmitted={isSubmitted}></Summarizer> :
-                                             <Expander
-                                                setInputText={setInputText}
-                                                inputText={inputText}
-                                                isSubmitted={isSubmitted}></Expander>
+                    tool_dict[tool]
                 }
             </Row>
 
