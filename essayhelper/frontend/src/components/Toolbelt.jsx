@@ -33,6 +33,7 @@ function Toolbelt (props) {
                         outputText={outputText}
                         inputText={inputText}
                         isSubmitted={isSubmitted}
+                        setIsSubmitted={setIsSubmitted}
                         submissionCount={submissionCount}></Summarizer>,
         "paraphrase": <Paraphraser
                             setInputText={setInputText}
@@ -42,6 +43,7 @@ function Toolbelt (props) {
                             isSubmitted={isSubmitted}></Paraphraser> ,
         "expand": <Expander
                         setInputText={setInputText}
+
                         setOutputText={setOutputText}
                         outputText={outputText}
                         inputText={inputText}
@@ -54,6 +56,7 @@ function Toolbelt (props) {
         e.preventDefault()
         setInputText(tempInput)
         setSubmissionCount(prev => prev + 1)
+        setIsSubmitted(true)
     }
 
     return (

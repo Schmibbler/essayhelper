@@ -11,10 +11,13 @@ function Summarizer(props) {
     let tempInput = props.tempInput
     let submissionCount = props.submissionCount
     let setOutputText = props.setOutputText
+
+    const [isAtWordLimit, setIsAtWordLimit] = useState(false)
     const isMounted = useRef(false);
 
     function handleTextChange(e) {
         props.setTempInput(e.target.value)
+        props.setIsSubmitted(false)
         if (e.target.value.length === 0)
             props.setOutputText("")
     }
@@ -55,17 +58,21 @@ function Summarizer(props) {
                                           onChange={handleTextChange}>
 
                             </Form.Control>
+                            <Form.Label className="text-muted wordcount">{tempInput.split(' ').length - 1 + '/300 words'}
+                            </Form.Label>
                         </Col>
                         <Col>
                             <Form.Control 
-                            readOnly={true}
+                            readOnly={false}
                             size="lg"
                             placeholder="This is where the summary ends up!" 
                             as="textarea" rows={10}
                             className="text-box"
                             value={props.outputText}>
-                                
                             </Form.Control>
+                            <Form.Label className="text-muted wordcount">{outputText.split(' ').length - 1 + ' words'}
+                            </Form.Label>
+
                         </Col>
                     </Row>
                 </Form>

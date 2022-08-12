@@ -4,13 +4,13 @@
 }
 
 .summarizer {
-  max-width: 80%;
+  max-width: 95%;
   text-align: center;
   margin: auto;
 }
 
 .expander {
-  max-width: 80%;
+  max-width: 95%;
   text-align: center;
   margin: auto;
 }
@@ -19,7 +19,10 @@
 
 .text-box {
   resize: none;
+}
 
+.wordcount {
+  text-align: left;
 }
 /* Buttons */
 
