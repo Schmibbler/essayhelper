@@ -6,11 +6,11 @@ import Col from 'react-bootstrap/Col';
 
 function Summarizer(props) {
     
-    const [textInput, setTextInput] = useState("")
+    // const [textInput, setTextInput] = useState("")
 
     function handleTextChange(e) {
         e.preventDefault()
-        setTextInput(e.target.value)
+        props.setInputText(e.target.value)
     }
 
     return (
@@ -28,7 +28,6 @@ function Summarizer(props) {
                         </Col>
                         <Col>
                             <Form.Control 
-                            readOnly="true"
                             size="lg"
                             placeholder="This is where the summary ends up!" 
                             as="textarea" rows={10}
